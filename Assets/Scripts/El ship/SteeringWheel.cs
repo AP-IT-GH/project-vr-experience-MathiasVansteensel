@@ -87,12 +87,12 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class SteeringWheel : UnityEngine.XR.Interaction.Toolkit.Interactables.XRBaseInteractable
 {
     [SerializeField] private Transform wheelTransform;
-    [SerializeField] private float maxRotation = 180f;
+    [SerializeField] public float maxRotation = 180f;
     
     public UnityEvent<float> OnWheelRotated;
 
     private float currentAngle = 0.0f;
-    private float totalRotation = 0.0f; // Tracks cumulative rotation
+    public float totalRotation = 0.0f; // Tracks cumulative rotation
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {

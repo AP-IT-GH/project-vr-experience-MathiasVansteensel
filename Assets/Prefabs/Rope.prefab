@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8195876481760348239}
   - component: {fileID: 422291371949797737}
   - component: {fileID: 7869681047130671982}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
-  m_FarAttachMode: 0
+  m_FarAttachMode: 1
 --- !u!114 &7869681047130671982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -277,8 +277,8 @@ MonoBehaviour:
   slideAxis: {x: 0, y: 1, z: 0}
   minValue: 0
   maxValue: 100
-  currentValue: 50
-  slideSensitivity: 1
+  currentValue: 0
+  slideSensitivity: 10
   OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

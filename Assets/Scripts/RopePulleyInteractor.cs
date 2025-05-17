@@ -9,7 +9,8 @@ public class RopePulleyInteractor : MonoBehaviour
     [SerializeField] private Vector3 slideAxis = Vector3.forward;
     [SerializeField] private float minValue = 0;
     [SerializeField] private float maxValue = 100;
-    [SerializeField] private float currentValue = 50;
+    [SerializeField] private float currentValue = 0;
+    private float lastValue = 0;
     [SerializeField] private float slideSensitivity = 1.0f;
 
     private XRGrabInteractable grabInteractable;
@@ -36,6 +37,7 @@ public class RopePulleyInteractor : MonoBehaviour
     private void OnRelease(SelectExitEventArgs args)
     {
         interactorTransform = null;
+        lastValue = currentValue;
     }
 
     void Update()
@@ -46,7 +48,7 @@ public class RopePulleyInteractor : MonoBehaviour
         float slideDistance = Vector3.Dot(currentPosition - initialLocalPosition, slideAxis.normalized);
         
         currentValue = Mathf.Clamp(
-            currentValue + slideDistance * slideSensitivity, 
+            lastValue + slideDistance * slideSensitivity, 
             minValue, 
             maxValue
         );

@@ -984,6 +984,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CannonShoot",
+                    "type": "Button",
+                    "id": "275a53cd-01d2-490e-9c40-9dd1dfb657b9",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1281,6 +1290,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Left Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0b120430-fed1-48f7-8ab2-e1f027514648",
+                    "path": "<XRController>{LeftHand}/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CannonShoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -2075,6 +2095,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "CannonShoot",
+                    "type": "Button",
+                    "id": "0a7b4ad4-7536-4395-90c2-d7278297182c",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2372,6 +2401,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Right Grab",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1cd5ccd0-83ed-4819-9fa3-f1700775d281",
+                    "path": "<XRController>{RightHand}/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "CannonShoot",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -142,7 +142,7 @@ public class CannonController : XRBaseInteractable
         // Use a smaller rotation sensitivity with two hands
         return 1.0f / interactorsSelecting.Count;
     }
-    private void ShootCannonball(InputAction.CallbackContext context)
+    public void ShootCannonball(InputAction.CallbackContext context = default)
     {
         if (isReloading) return; // Prevent firing if the cannon is reloading
 

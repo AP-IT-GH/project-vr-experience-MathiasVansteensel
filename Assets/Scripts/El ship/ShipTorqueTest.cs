@@ -20,7 +20,7 @@ public class ShipTorqueTest : MonoBehaviour
         torque = SteeringWheel.totalRotation;
         if(math.abs(torque) > 5) //speelruimte voor geen perma draaing te krijgen
         {
-            rb.AddRelativeTorque(transform.up * torque/SteeringWheel.maxRotation);
+            rb.AddRelativeTorque(transform.up * (torque /SteeringWheel.maxRotation*0.01f)* Time.deltaTime, ForceMode.VelocityChange);
         }
 
     }

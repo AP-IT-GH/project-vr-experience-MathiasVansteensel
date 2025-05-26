@@ -349,7 +349,7 @@
                     "name": "Is Tracked",
                     "type": "Button",
                     "id": "82eb6741-beef-48d3-83ab-a957dc1caa1e",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -993,6 +993,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "PIDInteraction",
+                    "type": "Button",
+                    "id": "016d309e-b2fc-4497-92b8-890d2b653cdc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1301,6 +1310,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "CannonShoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cf583f4f-fcad-405b-945a-461739bb221b",
+                    "path": "<XRController>{LeftHand}/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PIDInteraction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1989,6 +2009,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "PIDInteraction",
+                    "type": "Button",
+                    "id": "71faef5e-aa66-4f38-8774-fd7392a48aba",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Select Value",
                     "type": "Value",
                     "id": "39bbf1ac-21a3-413d-90f6-6dbf6efeaabe",
@@ -2159,6 +2188,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Select",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c3e9ed83-30c8-44c7-971e-c4b41b31957f",
+                    "path": "<XRController>{LeftHand}/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PIDInteraction",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

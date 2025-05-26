@@ -7,6 +7,7 @@ public class ShipTorqueTest : MonoBehaviour
     private float torque;
     private Rigidbody rb;
     [SerializeField] public SteeringWheel SteeringWheel;
+    [SerializeField] public RopePulleyInteractor rope;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -18,10 +19,13 @@ public class ShipTorqueTest : MonoBehaviour
     void Update()
     {
         torque = SteeringWheel.totalRotation;
-        if(math.abs(torque) > 5) //speelruimte voor geen perma draaing te krijgen
+        if (math.abs(torque) > 5) //speelruimte voor geen perma draaing te krijgen
         {
-            rb.AddRelativeTorque(transform.up * (torque /SteeringWheel.maxRotation*0.01f)* Time.deltaTime, ForceMode.VelocityChange);
+            // rb.AddRelativeTorque(transform.up * (torque /SteeringWheel.maxRotation*0.1f)* Time.deltaTime, ForceMode.VelocityChange);
+            transform.Rotate(Vector3.up, (torque / SteeringWheel.maxRotation * 2f) * Time.deltaTime, Space.Self);
         }
+
+        
 
     }
 }

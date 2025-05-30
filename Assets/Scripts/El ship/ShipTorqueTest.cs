@@ -18,12 +18,12 @@ public class ShipTorqueTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        torque = SteeringWheel.totalRotation;
-        if (math.abs(torque) > 5) //speelruimte voor geen perma draaing te krijgen
-        {
-            // rb.AddRelativeTorque(transform.up * (torque /SteeringWheel.maxRotation*0.1f)* Time.deltaTime, ForceMode.VelocityChange);
-            transform.Rotate(Vector3.up, (torque / SteeringWheel.maxRotation * 2f) * Time.deltaTime, Space.Self);
-        }
+        // torque = SteeringWheel.totalRotation;
+        // if (math.abs(torque) > 5) //speelruimte voor geen perma draaing te krijgen
+        // {
+        //     // rb.AddRelativeTorque(transform.up * (torque /SteeringWheel.maxRotation*0.1f)* Time.deltaTime, ForceMode.VelocityChange);
+        //     transform.Rotate(Vector3.up, (torque / SteeringWheel.maxRotation * 2f) * Time.deltaTime, Space.Self);
+        // }
 
         
 

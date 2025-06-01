@@ -1,0 +1,74 @@
+using UnityEngine;
+using Unity.MLAgents;
+
+public class EnvironmentManager : MonoBehaviour
+{
+    [Header("Borders (order: -X, +X, -Z, +Z)")]
+    public Transform[] borders; // 4 elements
+
+    [Header("Obstacles")]
+    public GameObject[] obstacles; // Place all obstacles in scene, disable in Inspector
+
+    [Header("Agents")]
+    public EnemyShipAgent[] agents; // Assign all agent instances in scene
+
+    private Vector3[] agentStartPositions;
+    private Quaternion[] agentStartRotations;
+
+    public static EnvironmentManager Instance;
+
+    private void Awake()
+    {
+        Instance = this;
+        // Deactivate all agents at the very start
+        foreach (var agent in agents)
+            agent.gameObject.SetActive(false);
+    }
+
+    private void Start()
+    {
+        // Store original positions and rotations as spawn points
+        agentStartPositions = new Vector3[agents.Length];
+        agentStartRotations = new Quaternion[agents.Length];
+        for (int i = 0; i < agents.Length; i++)
+        {
+            agentStartPositions[i] = agents[i].transform.position;
+            agentStartRotations[i] = agents[i].transform.rotation;
+        }
+        ResetEnvironment();
+    }
+
+    public void ResetEnvironment()
+    {
+        // Read curriculum parameters
+        int numAgents = (int)Academy.Instance.EnvironmentParameters.GetWithDefault("num_agents", 2);
+        int numObstacles = (int)Academy.Instance.EnvironmentParameters.GetWithDefault("num_obstacles", 0);
+        float arenaSize = Academy.Instance.EnvironmentParameters.GetWithDefault("arena_size", 30f);
+
+        // Move borders
+        if (borders.Length == 4)
+        {
+            borders[0].localPosition = new Vector3(-arenaSize, borders[0].localPosition.y, 0); // -X
+            borders[1].localPosition = new Vector3(arenaSize, borders[1].localPosition.y, 0);  // +X
+            borders[2].localPosition = new Vector3(0, borders[2].localPosition.y, -arenaSize); // -Z
+            borders[3].localPosition = new Vector3(0, borders[3].localPosition.y, arenaSize);  // +Z
+        }
+
+        // Activate obstacles
+        for (int i = 0; i < obstacles.Length; i++)
+            obstacles[i].SetActive(i < numObstacles);
+
+        // Activate agents and set positions only for newly activated agents
+        for (int i = 0; i < agents.Length; i++)
+        {
+            bool shouldBeActive = i < numAgents;
+            bool wasActive = agents[i].gameObject.activeSelf;
+            agents[i].gameObject.SetActive(shouldBeActive);
+            if (shouldBeActive && !wasActive)
+            {
+            agents[i].transform.position = agentStartPositions[i];
+            agents[i].transform.rotation = agentStartRotations[i];
+            }
+        }
+    }
+}

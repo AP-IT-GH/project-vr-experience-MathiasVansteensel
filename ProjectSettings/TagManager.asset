@@ -7,6 +7,8 @@ TagManager:
   - LeftController
   - RightController
   - BoatVolume
+  - Obstacle
+  - Agent
   layers:
   - Default
   - TransparentFX
@@ -20,10 +22,8 @@ TagManager:
   - Interactable
   - Interactable (string)
   - Boat
-  - 
-  - 
-  - 
-  - 
+  - Agent
+  - Obstacle
   - 
   - 
   - 

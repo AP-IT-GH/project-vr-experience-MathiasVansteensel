@@ -1,0 +1,119 @@
+{
+    "num_agents": {
+        "lesson_num": 3
+    },
+    "num_obstacles": {
+        "lesson_num": 4
+    },
+    "arena_size": {
+        "lesson_num": 3
+    },
+    "EnemyShipAgent": {
+        "checkpoints": [
+            {
+                "steps": 2599952,
+                "file_path": "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2599952.onnx",
+                "reward": 5.481186032295227,
+                "creation_time": 1748781715.2949948,
+                "auxillary_file_paths": [
+                    "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2599952.pt"
+                ]
+            },
+            {
+                "steps": 2649977,
+                "file_path": "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2649977.onnx",
+                "reward": 0.7987339062322127,
+                "creation_time": 1748781774.583978,
+                "auxillary_file_paths": [
+                    "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2649977.pt"
+                ]
+            },
+            {
+                "steps": 2699981,
+                "file_path": "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2699981.onnx",
+                "reward": 3.679752439260483,
+                "creation_time": 1748781834.5312252,
+                "auxillary_file_paths": [
+                    "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2699981.pt"
+                ]
+            },
+            {
+                "steps": 2749943,
+                "file_path": "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2749943.onnx",
+                "reward": 1.9578758858144283,
+                "creation_time": 1748781893.6298,
+                "auxillary_file_paths": [
+                    "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2749943.pt"
+                ]
+            },
+            {
+                "steps": 2799980,
+                "file_path": "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2799980.onnx",
+                "reward": -8.107612662948668,
+                "creation_time": 1748781954.842008,
+                "auxillary_file_paths": [
+                    "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2799980.pt"
+                ]
+            },
+            {
+                "steps": 2849960,
+                "file_path": "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2849960.onnx",
+                "reward": 3.372699827528917,
+                "creation_time": 1748782014.131028,
+                "auxillary_file_paths": [
+                    "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2849960.pt"
+                ]
+            },
+            {
+                "steps": 2899986,
+                "file_path": "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2899986.onnx",
+                "reward": 6.367153103908767,
+                "creation_time": 1748782073.4628284,
+                "auxillary_file_paths": [
+                    "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2899986.pt"
+                ]
+            },
+            {
+                "steps": 2949963,
+                "file_path": "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2949963.onnx",
+                "reward": 6.556809573620558,
+                "creation_time": 1748782134.5130446,
+                "auxillary_file_paths": [
+                    "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2949963.pt"
+                ]
+            },
+            {
+                "steps": 2999994,
+                "file_path": "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2999994.onnx",
+                "reward": 4.321377913351171,
+                "creation_time": 1748782193.9320095,
+                "auxillary_file_paths": [
+                    "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-2999994.pt"
+                ]
+            },
+            {
+                "steps": 3000058,
+                "file_path": "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-3000058.onnx",
+                "reward": 4.321377913351171,
+                "creation_time": 1748782194.0513089,
+                "auxillary_file_paths": [
+                    "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-3000058.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 3000058,
+            "file_path": "results\\ship_curriculum_2\\EnemyShipAgent.onnx",
+            "reward": 4.321377913351171,
+            "creation_time": 1748782194.0513089,
+            "auxillary_file_paths": [
+                "results\\ship_curriculum_2\\EnemyShipAgent\\EnemyShipAgent-3000058.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

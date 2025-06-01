@@ -1,0 +1,11 @@
+{
+  "measure": "reward",
+  "thresholds": [0.5, 1.0, 1.5, 2.0],
+  "min_lesson_length": 200,
+  "signal_smoothing": true,
+  "parameters": {
+    "num_agents": [2, 2, 4, 8, 12],
+    "num_obstacles": [0, 3, 5, 15, 20],
+    "arena_size": [100, 150, 150, 250, 400]
+  }
+}

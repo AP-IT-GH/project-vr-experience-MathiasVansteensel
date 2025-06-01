@@ -1,0 +1,123 @@
+behaviors:
+  EnemyShipAgent:
+    trainer_type: ppo
+    max_steps: 3000000
+    time_horizon: 64
+    summary_freq: 10000
+    hyperparameters:
+      batch_size: 512
+      buffer_size: 10240
+      learning_rate: 0.0003
+      beta: 0.005
+      epsilon: 0.2
+      lambd: 0.95
+      num_epoch: 3
+    network_settings:
+      normalize: false
+      hidden_units: 256
+      num_layers: 3
+      memory:
+        sequence_length: 64
+        memory_size: 128
+    reward_signals:
+      extrinsic:
+        gamma: 0.99
+        strength: 1.0
+    keep_checkpoints: 10
+    checkpoint_interval: 50000
+
+environment_parameters:
+  num_agents:
+    curriculum:
+      - name: TwoAgents
+        completion_criteria:
+          measure: reward
+          behavior: EnemyShipAgent
+          signal_smoothing: true
+          min_lesson_length: 200
+          threshold: 1.0
+        value: 2
+      - name: FourAgents
+        completion_criteria:
+          measure: reward
+          behavior: EnemyShipAgent
+          signal_smoothing: true
+          min_lesson_length: 200
+          threshold: 1.5
+        value: 4
+      - name: EightAgents
+        completion_criteria:
+          measure: reward
+          behavior: EnemyShipAgent
+          signal_smoothing: true
+          min_lesson_length: 200
+          threshold: 2.0
+        value: 8
+      - name: TwelveAgents
+        value: 12
+
+  num_obstacles:
+    curriculum:
+      - name: NoObstacles
+        completion_criteria:
+          measure: reward
+          behavior: EnemyShipAgent
+          signal_smoothing: true
+          min_lesson_length: 200
+          threshold: 0.5
+        value: 0
+      - name: SomeObstacles
+        completion_criteria:
+          measure: reward
+          behavior: EnemyShipAgent
+          signal_smoothing: true
+          min_lesson_length: 200
+          threshold: 1.0
+        value: 3
+      - name: MoreObstacles
+        completion_criteria:
+          measure: reward
+          behavior: EnemyShipAgent
+          signal_smoothing: true
+          min_lesson_length: 200
+          threshold: 1.5
+        value: 5
+      - name: ManyObstacles
+        completion_criteria:
+          measure: reward
+          behavior: EnemyShipAgent
+          signal_smoothing: true
+          min_lesson_length: 200
+          threshold: 2.0
+        value: 15
+      - name: MaxObstacles
+        value: 20
+
+  arena_size:
+    curriculum:
+      - name: SmallArena
+        completion_criteria:
+          measure: reward
+          behavior: EnemyShipAgent
+          signal_smoothing: true
+          min_lesson_length: 200
+          threshold: 0.5
+        value: 100
+      - name: MediumArena
+        completion_criteria:
+          measure: reward
+          behavior: EnemyShipAgent
+          signal_smoothing: true
+          min_lesson_length: 200
+          threshold: 1.5
+        value: 150
+      - name: LargeArena
+        completion_criteria:
+          measure: reward
+          behavior: EnemyShipAgent
+          signal_smoothing: true
+          min_lesson_length: 200
+          threshold: 2.0
+        value: 250
+      - name: HugeArena
+        value: 400

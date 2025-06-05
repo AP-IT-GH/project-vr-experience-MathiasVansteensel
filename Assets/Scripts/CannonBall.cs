@@ -8,7 +8,7 @@ public class Cannonball : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         var hitAgent = collision.gameObject.GetComponent<EnemyShipAgent>();
-        if (hitAgent != null && shooter != null && hitAgent == target?.GetComponent<EnemyShipAgent>())
+        if (hitAgent != null && shooter != null && hitAgent.name == target.name)
         {
             Debug.Log($"Cannonball hit {hitAgent.name} fired by {shooter.name}");
             shooter.OnHitOpponent();

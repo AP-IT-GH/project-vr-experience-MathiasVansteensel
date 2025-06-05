@@ -167,7 +167,7 @@ Transform:
   m_GameObject: {fileID: 1268263989916645149}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0.12164831, y: -2.9335928, z: 0.5993695}
+  m_LocalPosition: {x: 0.12164831, y: 0, z: 0.5993695}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -212,67 +212,6 @@ Transform:
   - {fileID: 5747910789279171118}
   m_Father: {fileID: 8933124911449220921}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1978450951842640019
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5857579001574462712}
-  - component: {fileID: 945208203541495106}
-  m_Layer: 12
-  m_Name: AimingRays
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5857579001574462712
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1978450951842640019}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -2.31, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8076242399917699834}
-  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!114 &945208203541495106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1978450951842640019}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SensorName: RightAimingRays
-  m_DetectableTags:
-  - Agent
-  m_RaysPerDirection: 3
-  m_MaxRayDegrees: 20
-  m_SphereCastRadius: 0.5
-  m_RayLength: 100
-  m_RayLayerMask:
-    serializedVersion: 2
-    m_Bits: 4096
-  m_ObservationStacks: 1
-  m_AlternatingRayOrder: 1
-  m_UseBatchedRaycasts: 0
-  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
-  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
-  m_StartVerticalOffset: 0
-  m_EndVerticalOffset: 0
 --- !u!1 &2466021918517977065
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,7 +619,7 @@ Transform:
   m_GameObject: {fileID: 3728981540889205535}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.64, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -706,7 +645,7 @@ MonoBehaviour:
   m_RaysPerDirection: 8
   m_MaxRayDegrees: 90
   m_SphereCastRadius: 0.5
-  m_RayLength: 70
+  m_RayLength: 100
   m_RayLayerMask:
     serializedVersion: 2
     m_Bits: 12288
@@ -859,7 +798,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6500453426853342530}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.70710677, y: 0, z: 0, w: 0.70710677}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -2, y: -0, z: 0}
   m_LocalScale: {x: 2.4098468, y: 2.942572, z: 2.9425726}
   m_ConstrainProportionsScale: 0
@@ -1191,8 +1130,6 @@ Transform:
   m_Children:
   - {fileID: 8933124911449220921}
   - {fileID: 1104451973506320278}
-  - {fileID: 5857579001574462712}
-  - {fileID: 3776743164351127047}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3239546407933860459
@@ -1211,9 +1148,11 @@ MonoBehaviour:
     maxStep: 0
   hasUpgradedFromAgentParameters: 1
   MaxStep: 10000
-  forwardSpeed: 10
+  maxForwardSpeed: 15
+  forwardForce: 500
   maxTurnSpeed: 60
   turnAcceleration: 120
+  dragCoefficient: 2
   leftCannon: {fileID: 7115197789629240377}
   rightCannon: {fileID: 4167773314769690994}
   cannonAimMin: -10
@@ -1238,10 +1177,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_BrainParameters:
-    VectorObservationSize: 16
+    VectorObservationSize: 21
     NumStackedVectorObservations: 3
     m_ActionSpec:
-      m_NumContinuousActions: 3
+      m_NumContinuousActions: 4
       BranchSizes: 0200000002000000
     VectorActionSize: 
     VectorActionDescriptions: []
@@ -1264,9 +1203,9 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7570621961554439298}
   serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 1
-  m_AngularDrag: 2
+  m_Mass: 2
+  m_Drag: 0
+  m_AngularDrag: 3
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -1298,67 +1237,6 @@ MonoBehaviour:
   DecisionPeriod: 5
   DecisionStep: 0
   TakeActionsBetweenDecisions: 1
---- !u!1 &7620609308310637534
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 3776743164351127047}
-  - component: {fileID: 4039867042663443340}
-  m_Layer: 12
-  m_Name: AimingRays
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &3776743164351127047
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7620609308310637534}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: -2.31, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8076242399917699834}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &4039867042663443340
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7620609308310637534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6bb6b867a41448888c1cd4f99643ad71, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SensorName: LeftAimingRays
-  m_DetectableTags:
-  - Agent
-  m_RaysPerDirection: 3
-  m_MaxRayDegrees: 20
-  m_SphereCastRadius: 0.5
-  m_RayLength: 100
-  m_RayLayerMask:
-    serializedVersion: 2
-    m_Bits: 4096
-  m_ObservationStacks: 1
-  m_AlternatingRayOrder: 1
-  m_UseBatchedRaycasts: 0
-  rayHitColor: {r: 1, g: 0, b: 0, a: 1}
-  rayMissColor: {r: 1, g: 1, b: 1, a: 1}
-  m_StartVerticalOffset: 0
-  m_EndVerticalOffset: 0
 --- !u!1 &8911926490527306380
 GameObject:
   m_ObjectHideFlags: 0
@@ -1383,7 +1261,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8911926490527306380}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.70710677, z: -0.70710677, w: 0}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -2.0002635, y: 0.00031873296, z: 0.00000006061376}
   m_LocalScale: {x: 2.4098468, y: 2.942572, z: 2.9425726}
   m_ConstrainProportionsScale: 0

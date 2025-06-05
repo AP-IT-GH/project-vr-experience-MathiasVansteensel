@@ -14,26 +14,22 @@ public class EnvironmentManager : MonoBehaviour
 
     private Vector3[] agentStartPositions;
     private Quaternion[] agentStartRotations;
-
-    public static EnvironmentManager Instance;
-
-    private void Awake()
-    {
-        Instance = this;
-        // Deactivate all agents at the very start
-        foreach (var agent in agents)
-            agent.gameObject.SetActive(false);
-    }
+    private bool[] agentWasActive; // Track which agents were active in previous reset
 
     private void Start()
     {
         // Store original positions and rotations as spawn points
         agentStartPositions = new Vector3[agents.Length];
         agentStartRotations = new Quaternion[agents.Length];
+        agentWasActive = new bool[agents.Length]; // Initialize tracking array
+        
         for (int i = 0; i < agents.Length; i++)
         {
+            // Deactivate all agents initially
+            agents[i].gameObject.SetActive(false);
             agentStartPositions[i] = agents[i].transform.position;
             agentStartRotations[i] = agents[i].transform.rotation;
+            agentWasActive[i] = false; // Initially none were active
         }
         ResetEnvironment();
     }
@@ -43,7 +39,7 @@ public class EnvironmentManager : MonoBehaviour
         // Read curriculum parameters
         int numAgents = (int)Academy.Instance.EnvironmentParameters.GetWithDefault("num_agents", 2);
         int numObstacles = (int)Academy.Instance.EnvironmentParameters.GetWithDefault("num_obstacles", 0);
-        float arenaSize = Academy.Instance.EnvironmentParameters.GetWithDefault("arena_size", 30f);
+        float arenaSize = Academy.Instance.EnvironmentParameters.GetWithDefault("arena_size", 100f);
 
         // Move borders
         if (borders.Length == 4)
@@ -58,17 +54,25 @@ public class EnvironmentManager : MonoBehaviour
         for (int i = 0; i < obstacles.Length; i++)
             obstacles[i].SetActive(i < numObstacles);
 
-        // Activate agents and set positions only for newly activated agents
+        // Activate agents and set positions for newly activated ones only
         for (int i = 0; i < agents.Length; i++)
         {
             bool shouldBeActive = i < numAgents;
-            bool wasActive = agents[i].gameObject.activeSelf;
-            agents[i].gameObject.SetActive(shouldBeActive);
+            bool wasActive = agentWasActive[i];
+            
+            // Only reset position if this agent is newly activated
             if (shouldBeActive && !wasActive)
             {
-            agents[i].transform.position = agentStartPositions[i];
-            agents[i].transform.rotation = agentStartRotations[i];
+                agents[i].transform.position = agentStartPositions[i];
+                agents[i].transform.rotation = agentStartRotations[i];
+                Debug.Log($"Newly activated agent {agents[i].name} - reset to starting position");
             }
+            
+            // Update active state
+            agents[i].gameObject.SetActive(shouldBeActive);
+            
+            // Update tracking
+            agentWasActive[i] = shouldBeActive;
         }
     }
 }

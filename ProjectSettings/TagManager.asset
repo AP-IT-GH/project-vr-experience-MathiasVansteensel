@@ -8,6 +8,7 @@ TagManager:
   - RightController
   - Obstacle
   - Agent
+  - cannonBall
   - Boat
   layers:
   - Default

@@ -538,3 +538,4 @@ MonoBehaviour:
   rightTriggerActionReference: {fileID: 5781000197162479046, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   reloadTime: 2
   cannonFireForce: 1000
+  cannonSmoke: {fileID: 6591963137252596542, guid: 13e028e6090515441aed4cc55b130d59, type: 3}

@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 1898323478048140913}
   m_Layer: 7
   m_Name: CannonBall
-  m_TagString: Untagged
+  m_TagString: cannonBall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -150,3 +150,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shooter: {fileID: 0}
+  target: {fileID: 0}

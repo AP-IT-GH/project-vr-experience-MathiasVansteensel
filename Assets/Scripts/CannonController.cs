@@ -16,6 +16,9 @@ public class CannonController : XRBaseInteractable
     [SerializeField] private float reloadTime = 2.0f; // Time in seconds to reload the cannon
     [SerializeField] private float cannonFireForce = 1000.0f; // Force applied to the cannonball
 
+    // VFX for cannon smoke
+    [SerializeField] private GameObject cannonSmoke;
+
     private float currentBarrelAngle = 0.0f;
     private float currentBaseAngle = 0.0f;
     private bool isReloading = false; // Tracks if the cannon is reloading
@@ -148,6 +151,21 @@ public class CannonController : XRBaseInteractable
 
         if (cannonBallPrefab != null && cannonBallSpawnPoint != null)
         {
+            if (cannonSmoke != null)
+            {
+                GameObject vfx = Instantiate(cannonSmoke, cannonBallSpawnPoint.position, cannonBallSpawnPoint.rotation);
+                
+                // Optionally destroy the VFX after it finishes
+                ParticleSystem ps = vfx.GetComponent<ParticleSystem>();
+                if (ps != null)
+                {
+                    Destroy(vfx, ps.main.duration + ps.main.startLifetime.constantMax);
+                }
+                else
+                {
+                    Destroy(vfx, 2f); // fallback if no particle system
+                }
+            }
             // Instantiate the cannonball at the spawn point
             GameObject cannonBall = Instantiate(cannonBallPrefab, cannonBallSpawnPoint.position, cannonBallSpawnPoint.rotation);
 

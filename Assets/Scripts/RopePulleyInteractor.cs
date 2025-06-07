@@ -3,7 +3,7 @@ using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
-[RequireComponent(typeof(XRGrabInteractable))]
+[RequireComponent(typeof(XRSimpleInteractable))]
 public class RopePulleyInteractor : MonoBehaviour
 {
     [SerializeField] private Vector3 slideAxis = Vector3.forward;
@@ -12,32 +12,32 @@ public class RopePulleyInteractor : MonoBehaviour
     [SerializeField] private float currentValue = 0;
     private float lastValue = 0;
     [SerializeField] private float slideSensitivity = 1.0f;
-    [SerializeField] private SharedPulleyValue sharedValue; // Assign in inspector
+    [SerializeField] private SharedPulleyValue sharedValue;
 
-    private XRGrabInteractable grabInteractable;
-    private Vector3 initialLocalPosition;
-    private Transform interactorTransform;
+    private XRSimpleInteractable simpleInteractable;
+    private Vector3 lastHandWorldPosition;
+    private Transform activeInteractorTransform;
+    private bool isBeingInteracted = false;
 
     public UnityEvent<float> OnValueChanged;
 
     void Awake()
     {
-        grabInteractable = GetComponent<XRGrabInteractable>();
-        grabInteractable.movementType = XRGrabInteractable.MovementType.Kinematic;
+        simpleInteractable = GetComponent<XRSimpleInteractable>();
 
-        grabInteractable.selectEntered.AddListener(OnGrab);
-        grabInteractable.selectExited.AddListener(OnRelease);
+        simpleInteractable.selectEntered.AddListener(OnSelectEntered);
+        simpleInteractable.selectExited.AddListener(OnSelectExited);
 
         if (sharedValue != null)
             sharedValue.OnValueChanged.AddListener(SetValue);
     }
 
-    private void OnGrab(SelectEnterEventArgs args)
+    private void OnSelectEntered(SelectEnterEventArgs args)
     {
-        interactorTransform = args.interactorObject.transform;
-        initialLocalPosition = transform.InverseTransformPoint(interactorTransform.position);
+        activeInteractorTransform = args.interactorObject.transform;
+        lastHandWorldPosition = activeInteractorTransform.position;
+        isBeingInteracted = true;
 
-        // Initialize currentValue and lastValue from the shared value
         if (sharedValue != null)
         {
             currentValue = sharedValue.Value;
@@ -45,21 +45,30 @@ public class RopePulleyInteractor : MonoBehaviour
         }
     }
 
-    private void OnRelease(SelectExitEventArgs args)
+    private void OnSelectExited(SelectExitEventArgs args)
     {
-        interactorTransform = null;
+        activeInteractorTransform = null;
+        isBeingInteracted = false;
         lastValue = currentValue;
     }
 
     void Update()
     {
-        if (!grabInteractable.isSelected) return;
+        if (!isBeingInteracted || activeInteractorTransform == null) return;
 
-        Vector3 currentPosition = transform.InverseTransformPoint(interactorTransform.position);
-        float slideDistance = Vector3.Dot(currentPosition - initialLocalPosition, slideAxis.normalized);
+        // Track hand movement in world space
+        Vector3 currentHandPosition = activeInteractorTransform.position;
+        Vector3 handMovement = currentHandPosition - lastHandWorldPosition;
 
+        // Convert slide axis to world space (accounts for ship rotation)
+        Vector3 worldSlideAxis = transform.TransformDirection(slideAxis.normalized);
+
+        // Project hand movement onto slide axis
+        float slideDistance = Vector3.Dot(handMovement, worldSlideAxis);
+
+        // Calculate new value
         float newValue = Mathf.Clamp(
-            lastValue + slideDistance * slideSensitivity,
+            currentValue + slideDistance * slideSensitivity,
             minValue,
             maxValue
         );
@@ -71,11 +80,22 @@ public class RopePulleyInteractor : MonoBehaviour
                 sharedValue.Value = currentValue;
             OnValueChanged.Invoke(currentValue);
         }
+
+        lastHandWorldPosition = currentHandPosition;
     }
 
     public void SetValue(float newValue)
     {
         currentValue = Mathf.Clamp(newValue, minValue, maxValue);
         OnValueChanged.Invoke(currentValue);
+    }
+
+    void OnDrawGizmos()
+    {
+        Vector3 worldSlideAxis = Application.isPlaying ?
+            transform.TransformDirection(slideAxis.normalized) :
+            slideAxis.normalized;
+        Gizmos.color = Color.cyan;
+        Gizmos.DrawRay(transform.position, worldSlideAxis * 0.5f);
     }
 }

@@ -6,9 +6,9 @@ TagManager:
   tags:
   - LeftController
   - RightController
-  - BoatVolume
   - Obstacle
   - Agent
+  - Boat
   layers:
   - Default
   - TransparentFX

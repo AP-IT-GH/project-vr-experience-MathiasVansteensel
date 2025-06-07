@@ -931,6 +931,7 @@ GameObject:
   - component: {fileID: 1704652446447476821}
   - component: {fileID: 6662785298623866707}
   - component: {fileID: 5582188356728580431}
+  - component: {fileID: 4162462172293643657}
   m_Layer: 8
   m_Name: Left Direct Interactor
   m_TagString: Untagged
@@ -1100,7 +1101,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 2304
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -1156,6 +1157,18 @@ MonoBehaviour:
     m_Duration: 0.1
     m_Frequency: 0
   m_AllowHoverHapticsWhileSelecting: 0
+--- !u!114 &4162462172293643657
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3503052580083712263}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3edcf43c3778bdf4fbdb2c5f82b27c4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3723393119544300079
 GameObject:
   m_ObjectHideFlags: 0
@@ -2560,6 +2573,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   detectionRadius: 0.2
+  useHandDetection: 1
 --- !u!1 &6816327584229394489
 GameObject:
   m_ObjectHideFlags: 0
@@ -2930,6 +2944,7 @@ GameObject:
   - component: {fileID: 4536617154758855179}
   - component: {fileID: 5595353872433686777}
   - component: {fileID: 220615019122053704}
+  - component: {fileID: 4721579612556586882}
   m_Layer: 8
   m_Name: Right Direct Interactor
   m_TagString: Untagged
@@ -3099,7 +3114,7 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 256
+    m_Bits: 2304
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -3155,6 +3170,18 @@ MonoBehaviour:
     m_Duration: 0.1
     m_Frequency: 0
   m_AllowHoverHapticsWhileSelecting: 0
+--- !u!114 &4721579612556586882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8323422017375542309}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3edcf43c3778bdf4fbdb2c5f82b27c4b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8934901150269965500
 GameObject:
   m_ObjectHideFlags: 0

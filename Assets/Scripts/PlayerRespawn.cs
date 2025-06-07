@@ -64,6 +64,32 @@ public class PlayerFallRespawn : MonoBehaviour
         isRespawning = false;
     }
 
+    // NEW: Public respawn with fade and callback for ship reset
+    public void RespawnWithFade(System.Action onFadeBlack)
+    {
+        StartCoroutine(RespawnSequenceWithCallback(onFadeBlack));
+    }
+
+    private IEnumerator RespawnSequenceWithCallback(System.Action onFadeBlack)
+    {
+        isRespawning = true;
+        fadeCanvas.gameObject.SetActive(true);
+
+        // Fade to black
+        yield return StartCoroutine(Fade(0f, 1f));
+
+        // Call the callback (e.g., reset ship position) while screen is black
+        onFadeBlack?.Invoke();
+
+        // Wait a short moment (optional)
+        yield return new WaitForSeconds(0.1f);
+
+        // Fade back in
+        yield return StartCoroutine(Fade(1f, 0f));
+        fadeCanvas.gameObject.SetActive(false);
+        isRespawning = false;
+    }
+
     private IEnumerator Fade(float startAlpha, float endAlpha)
     {
         float elapsed = 0f;

@@ -9,6 +9,8 @@ TagManager:
   - BoatVolume
   - Obstacle
   - Agent
+  - cannonBall
+  - Boat
   layers:
   - Default
   - TransparentFX

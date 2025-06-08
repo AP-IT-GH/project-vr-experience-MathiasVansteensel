@@ -532,7 +532,7 @@ MonoBehaviour:
   m_StartingInteractionStrengthFilters: []
   barrelTransform: {fileID: 4889760247797772165}
   baseTransform: {fileID: 9031963021798213210}
-  cannonBallPrefab: {fileID: 5808702412387081215, guid: 9eb12353e608c3c4a822eb93e5b6fd02, type: 3}
+  cannonBallPrefab: {fileID: 966106134746857276, guid: 36d61184b5388a34b8877b3b7f9ae296, type: 3}
   cannonBallSpawnPoint: {fileID: 4599515331756642050}
   leftTriggerActionReference: {fileID: -8152552392771978221, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   rightTriggerActionReference: {fileID: 5781000197162479046, guid: c348712bda248c246b8c49b3db54643f, type: 3}

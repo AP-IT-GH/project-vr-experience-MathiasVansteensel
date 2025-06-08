@@ -463,6 +463,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: TrainingEnvironment
       objectReference: {fileID: 0}
+    - target: {fileID: 8451825755049320076, guid: 71697a13eddb192498824b9d2fc1796d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -568.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 8451825755049320076, guid: 71697a13eddb192498824b9d2fc1796d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -202.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

@@ -44,7 +44,7 @@ public class EnemyShipAgent : Agent
 
     // Add these private fields to track collision state
     private bool isCollidingWithObstacle = false;
-    private float obstacleCollisionPenalty = -0.1f; // Per-frame penalty
+    private float obstacleCollisionPenalty = -0.5f; // Increased from -0.1f
 
     // Add these private fields to track standing still
     private float stationaryTime = 0f;
@@ -146,18 +146,57 @@ public class EnemyShipAgent : Agent
 
         // Target relative position
         if (target != null)
-            sensor.AddObservation(target.position - transform.position);
-        else
-            sensor.AddObservation(Vector3.zero);
-
-        // Add target velocity if available
-        if (target != null && target.GetComponent<Rigidbody>() != null)
         {
-            sensor.AddObservation(target.GetComponent<Rigidbody>().linearVelocity);
+            Vector3 toTarget = target.position - transform.position;
+            
+            // Global target position (current)
+            sensor.AddObservation(toTarget);
+            
+            // LOCAL target position relative to ship orientation (CRITICAL for side cannons)
+            Vector3 localTargetPos = transform.InverseTransformPoint(target.position);
+            sensor.AddObservation(localTargetPos);
+            
+            // Target's position relative to each cannon's firing line
+            Vector3 toTargetFromLeft = target.position - leftCannonMuzzle.position;
+            Vector3 toTargetFromRight = target.position - rightCannonMuzzle.position;
+            
+            float leftCannonAlignment = Vector3.Dot(leftCannon.forward, toTargetFromLeft.normalized);
+            float rightCannonAlignment = Vector3.Dot(rightCannon.forward, toTargetFromRight.normalized);
+            
+            sensor.AddObservation(leftCannonAlignment);
+            sensor.AddObservation(rightCannonAlignment);
+            
+            // Whether target is on left or right side of ship
+            float targetSide = Vector3.Dot(transform.right, toTarget.normalized); // -1 = left, +1 = right
+            sensor.AddObservation(targetSide);
         }
         else
         {
-            sensor.AddObservation(Vector3.zero);
+            // Add zeros when no target (should be 9 to match target observations)
+            for (int i = 0; i < 9; i++) sensor.AddObservation(0f);
+        }
+
+        // Add target distance and combat range observations
+        if (target != null)
+        {
+            float distanceToTarget = Vector3.Distance(transform.position, target.position);
+            float maxCombatRange = 50f;
+            
+            // Normalized distance (1.0 = at max range, 0.0 = very close)
+            sensor.AddObservation(Mathf.Clamp01(distanceToTarget / maxCombatRange));
+            
+            // Binary: in combat range or not
+            sensor.AddObservation(distanceToTarget <= maxCombatRange ? 1f : 0f);
+            
+            // Approach direction efficiency
+            Vector3 toTarget = (target.position - transform.position).normalized;
+            float approachEfficiency = Vector3.Dot(transform.forward, toTarget);
+            sensor.AddObservation(approachEfficiency);
+        }
+        else
+        {
+            // Add zeros when no target
+            for (int i = 0; i < 3; i++) sensor.AddObservation(0f);
         }
     }
 
@@ -198,7 +237,7 @@ public class EnemyShipAgent : Agent
         }
 
         // Increased step penalty to encourage faster action
-        AddReward(-0.0001f);
+        AddReward(-0.001f); // Increased from -0.0001f (10x larger)
 
         // Continuous penalty for being in contact with obstacles
         if (isCollidingWithObstacle)
@@ -210,28 +249,34 @@ public class EnemyShipAgent : Agent
         // Reward shaping: predictive aiming
         if (target != null)
         {
-            // Get curriculum parameters
             float aimingRewardMultiplier = Academy.Instance.EnvironmentParameters.GetWithDefault("aiming_reward", 1.0f);
-            
-            // Calculate predictive aiming
+
             if (CalculatePredictiveAiming(out Vector3 predictedTargetPos, out Vector3 cannonballImpactPos))
             {
                 float aimingError = Vector3.Distance(predictedTargetPos, cannonballImpactPos);
+
+                // Much tighter accuracy requirements
+                float maxAcceptableError = 5f; // Reduced from 10f
+                float perfectAimError = 2f;
                 
-                // Reward for good predictive aiming (inverse of error)
-                float maxAcceptableError = 20f; // Adjust based on your scale
                 if (aimingError < maxAcceptableError)
                 {
                     float aimingAccuracy = 1f - (aimingError / maxAcceptableError);
-                    AddReward(aimingAccuracy * 0.1f * aimingRewardMultiplier);
+                    AddReward(aimingAccuracy * 0.02f * aimingRewardMultiplier); // Much smaller base reward
+                }
+
+                // Only reward firing if aim is very good
+                bool isFiring = actions.DiscreteActions[0] > 0 || actions.DiscreteActions[1] > 0;
+                if (isFiring && aimingError < perfectAimError)
+                {
+                    float firingBonus = (1f - (aimingError / perfectAimError)) * 0.05f;
+                    AddReward(firingBonus * aimingRewardMultiplier);
                 }
                 
-                // Extra reward for firing when aiming is good
-                bool isFiring = actions.DiscreteActions[0] > 0 || actions.DiscreteActions[1] > 0;
-                if (isFiring && aimingError < maxAcceptableError * 0.5f)
+                // Penalty for firing with poor aim
+                if (isFiring && aimingError > maxAcceptableError)
                 {
-                    float firingBonus = (1f - (aimingError / (maxAcceptableError * 0.5f))) * 0.2f;
-                    AddReward(firingBonus * aimingRewardMultiplier);
+                    AddReward(-0.1f); // Penalty for wasted shots
                 }
             }
         }
@@ -239,6 +284,80 @@ public class EnemyShipAgent : Agent
         if (Time.time - episodeStartTime > 120f) // 2-minute episodes
         {
             EndEpisode();
+        }
+
+        if (target != null)
+        {
+            Vector3 toTarget = target.position - transform.position;
+            float distanceToTarget = toTarget.magnitude;
+            
+            // Only give tactical rewards when in actual combat range
+            if (distanceToTarget <= 50f) // Within cannon range
+            {
+                float targetSide = Mathf.Abs(Vector3.Dot(transform.right, toTarget.normalized));
+                float targetFront = Mathf.Abs(Vector3.Dot(transform.forward, toTarget.normalized));
+                
+                // Broadside positioning (only when in range)
+                if (targetSide > 0.7f && targetFront < 0.5f)
+                {
+                    AddReward(0.02f);
+                    
+                    // Optimal close combat range
+                    if (distanceToTarget < 30f && distanceToTarget > 15f) // Sweet spot
+                    {
+                        AddReward(0.03f);
+                    }
+                }
+            }     
+        }
+
+        if (target != null)
+        {
+            Vector3 toTarget = (target.position - transform.position).normalized;
+            
+            // Much stricter "crossing the T" requirements
+            Vector3 targetForward = target.transform.forward;
+            float targetExposure = Mathf.Abs(Vector3.Dot(targetForward, toTarget));
+            float ourBroadside = Mathf.Abs(Vector3.Dot(transform.right, toTarget));
+            
+            // Very strict requirements and much smaller reward
+            if (targetExposure > 0.9f && ourBroadside > 0.9f && Vector3.Distance(transform.position, target.position) < 40f)
+            {
+                AddReward(0.05f); // Much smaller than 0.5f
+            }
+            
+            // Remove or greatly reduce the broadside angle improvement reward
+            // This was giving too much reward for just turning
+        }
+
+        if (target != null)
+        {
+            float distanceToTarget = Vector3.Distance(transform.position, target.position);
+            
+            // Strong reward for being in effective combat range
+            float maxCombatRange = 50f; // Adjust based on your actual cannon range
+            if (distanceToTarget <= maxCombatRange)
+            {
+                float rangeReward = (maxCombatRange - distanceToTarget) / maxCombatRange * 0.1f;
+                AddReward(rangeReward); // Stronger reward for closer combat
+            }
+            
+            // Penalty for being too far apart (out of combat range)
+            if (distanceToTarget > maxCombatRange * 1.5f) // 75+ units apart
+            {
+                AddReward(-0.01f); // Encourage closing distance
+            }
+            
+            // Extra reward for approaching when far apart
+            if (distanceToTarget > maxCombatRange)
+            {
+                Vector3 toTarget = (target.position - transform.position).normalized;
+                float approachDot = Vector3.Dot(transform.forward, toTarget);
+                if (approachDot > 0.7f) // Moving directly towards target
+                {
+                    AddReward(0.02f); // Reward for closing distance
+                }
+            }
         }
     }
 
@@ -326,7 +445,7 @@ public class EnemyShipAgent : Agent
         }
         
         GameObject cannonball = Instantiate(cannonballPrefab, muzzle.position, muzzle.rotation);
-        var cannonballScript = cannonball.GetComponent<Cannonball>();
+        var cannonballScript = cannonball.GetComponent<CannonballTraining>();
         if (cannonballScript != null)
         {
             cannonballScript.shooter = this;
@@ -370,17 +489,21 @@ public class EnemyShipAgent : Agent
     {
         if (collision.gameObject.CompareTag("Obstacle"))
         {
-            // Start applying continuous penalty
             isCollidingWithObstacle = true;
             
-            // Initial collision penalty
-            Vector3 hitDir = collision.contacts[0].normal;
-            float rayDensity = Mathf.Max(0f, Vector3.Dot(transform.forward, hitDir)) * 20f; 
-            AddReward(-0.5f * rayDensity); // Reduced initial penalty since we'll apply continuous penalty
+            // Much larger initial crash penalty
+            AddReward(-2.0f); // Increased from -0.5f
+            
+            // Consider ending episode on crash
+            if (Vector3.Dot(rb.linearVelocity.normalized, collision.contacts[0].normal) < -0.5f) // Head-on crash
+            {
+                AddReward(-5.0f); // Massive penalty for head-on crashes
+                Debug.Log($"Agent {name} crashed head-on into obstacle!");
+            }
         }
         else if (collision.gameObject.CompareTag("Agent"))
         {
-            AddReward(-0.1f); // Smaller penalty for bumping another agent
+            AddReward(-1.0f); // Increased from -0.1f
         }
     }
 

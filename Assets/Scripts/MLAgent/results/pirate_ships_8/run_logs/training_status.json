@@ -1,0 +1,125 @@
+{
+    "num_agents": {
+        "lesson_num": 3
+    },
+    "num_obstacles": {
+        "lesson_num": 4
+    },
+    "arena_size": {
+        "lesson_num": 3
+    },
+    "aiming_reward": {
+        "lesson_num": 3
+    },
+    "combat_focus": {
+        "lesson_num": 3
+    },
+    "EnemyShipAgent": {
+        "checkpoints": [
+            {
+                "steps": 5999997,
+                "file_path": "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-5999997.onnx",
+                "reward": 116.94992318997781,
+                "creation_time": 1749383916.6272643,
+                "auxillary_file_paths": [
+                    "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-5999997.pt"
+                ]
+            },
+            {
+                "steps": 6499936,
+                "file_path": "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-6499936.onnx",
+                "reward": null,
+                "creation_time": 1749384260.8972893,
+                "auxillary_file_paths": [
+                    "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-6499936.pt"
+                ]
+            },
+            {
+                "steps": 6999915,
+                "file_path": "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-6999915.onnx",
+                "reward": 69.20279783010483,
+                "creation_time": 1749384601.3227406,
+                "auxillary_file_paths": [
+                    "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-6999915.pt"
+                ]
+            },
+            {
+                "steps": 7499889,
+                "file_path": "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-7499889.onnx",
+                "reward": 136.65606460306378,
+                "creation_time": 1749384940.7394757,
+                "auxillary_file_paths": [
+                    "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-7499889.pt"
+                ]
+            },
+            {
+                "steps": 7999959,
+                "file_path": "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-7999959.onnx",
+                "reward": 143.9423919893228,
+                "creation_time": 1749385279.2576785,
+                "auxillary_file_paths": [
+                    "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-7999959.pt"
+                ]
+            },
+            {
+                "steps": 8499890,
+                "file_path": "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-8499890.onnx",
+                "reward": 153.054446211883,
+                "creation_time": 1749385621.1655433,
+                "auxillary_file_paths": [
+                    "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-8499890.pt"
+                ]
+            },
+            {
+                "steps": 8999920,
+                "file_path": "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-8999920.onnx",
+                "reward": 158.42306207306683,
+                "creation_time": 1749385958.7046037,
+                "auxillary_file_paths": [
+                    "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-8999920.pt"
+                ]
+            },
+            {
+                "steps": 9499922,
+                "file_path": "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-9499922.onnx",
+                "reward": 160.7910975866458,
+                "creation_time": 1749386309.0991266,
+                "auxillary_file_paths": [
+                    "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-9499922.pt"
+                ]
+            },
+            {
+                "steps": 9999931,
+                "file_path": "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-9999931.onnx",
+                "reward": 123.80861015319825,
+                "creation_time": 1749386661.9433799,
+                "auxillary_file_paths": [
+                    "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-9999931.pt"
+                ]
+            },
+            {
+                "steps": 10000059,
+                "file_path": "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-10000059.onnx",
+                "reward": 123.80861015319825,
+                "creation_time": 1749386662.1235824,
+                "auxillary_file_paths": [
+                    "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-10000059.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 10000059,
+            "file_path": "results\\pirate_ships_8\\EnemyShipAgent.onnx",
+            "reward": 123.80861015319825,
+            "creation_time": 1749386662.1235824,
+            "auxillary_file_paths": [
+                "results\\pirate_ships_8\\EnemyShipAgent\\EnemyShipAgent-10000059.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "0.30.0",
+        "torch_version": "1.7.1+cu110"
+    }
+}

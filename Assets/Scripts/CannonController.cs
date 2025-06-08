@@ -175,6 +175,12 @@ public class CannonController : XRBaseInteractable
                 rb.AddForce(cannonBallSpawnPoint.forward * cannonFireForce); // Adjust force as needed
             }
 
+            // Set the shooter of the cannonball if it has a component that tracks this
+            if (cannonBall.TryGetComponent<Cannonball>(out Cannonball cannonBallComponent))
+            {
+                cannonBallComponent.shooter = this.transform.parent.gameObject;
+            }
+
             // Start the reload process
             StartCoroutine(ReloadCannon());
         }

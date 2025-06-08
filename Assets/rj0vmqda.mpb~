@@ -1,0 +1,36 @@
+using MathiasCode;
+using System;
+using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.State;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Simulation;
+public class Cannon : MonoBehaviour
+{
+    PlayerController player;
+    public GameObject cannonballPrefab;
+    public Transform cannonballSpawnPoint;
+
+    private DateTime nextShoottime = DateTime.MinValue;
+    private void Awake()
+    {
+        player = FindObjectOfType<PlayerController>();
+    }
+    void Update()
+    {
+        DateTime now = DateTime.Now;
+        if (InputManager.Instance == null && nextShoottime < now) return;
+
+
+
+        Rigidbody rightObj = InputManager.Instance.GetController(InputManager.ControllerHand.Right).carryObj;
+        Rigidbody leftObj = InputManager.Instance.GetController(InputManager.ControllerHand.Left).carryObj;
+        Rigidbody testPlayerObj = player.carryObj;
+        bool isInteractingWithCannon = (leftObj != null && leftObj.CompareTag("Cannon")) || (rightObj != null && rightObj.CompareTag("Cannon")) || (testPlayerObj != null && testPlayerObj.CompareTag("Cannon"));
+
+        Debug.Log(isInteractingWithCannon);
+
+        if (isInteractingWithCannon && 0 < InputManager.Instance.GetInput(ControllerButton.TriggerButton, InputManager.ControllerHand.Both))
+        {
+            Instantiate(cannonballPrefab, cannonballSpawnPoint.position, Quaternion.identity)
+        }
+    }
+}

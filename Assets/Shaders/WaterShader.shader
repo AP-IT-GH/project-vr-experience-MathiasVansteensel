@@ -174,6 +174,8 @@ Shader "Example/URPUnlitShaderTessellated"
                 float3 finalColor = waterColor;//lerp(waterColor, float3(1,1,1), fresnel * _FresnelStrength);
                 finalColor += specColor * 0.5;
 
+                finalColor = finalColor * clamp(dot(normal, lightDir), 0.66, 1.0);
+
                 return half4(finalColor, 0.9);
             }
 

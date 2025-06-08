@@ -13,6 +13,7 @@ TagManager:
   - PlayerHead
   - GroundCheck
   - BoatVolume
+  - Cannon
   layers:
   - Default
   - TransparentFX

@@ -4,13 +4,13 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Inputs.Readers;
+using UnityEngine.XR.Interaction.Toolkit.Inputs.Simulation;
 
 namespace MathiasCode 
 {
     public class PIDInteractionManager : MonoBehaviour
     {
-        public InputActionReference interactActionRef;
-        private InputAction interactAction;
+        
 
         public PID3DSettings pidSettings;
 
@@ -25,12 +25,14 @@ namespace MathiasCode
         public LayerMask playerLayer;
         private LayerMask mixedInteractionMask;
 
+        public InputManager.ControllerHand hand;
+
         private bool isNormalCarry = false;
         private bool isStringCarry = false;
         private bool allowCarryInput = true;
         internal bool isCarrying = false;
-        private Rigidbody carryObj;
-        private Collider carryObjCollider;
+        internal Rigidbody carryObj;
+        internal Collider carryObjCollider;
         private RaycastHit lastHit = default;
         private Vector3 carryObjLocalHitPoint = Vector3.zero;
         private float pickupHoldDistance = 2f;
@@ -42,7 +44,6 @@ namespace MathiasCode
 
         void Start()
         {
-            interactAction = interactActionRef.action;
             InitPID();
             interactionLayer = LayerMask.NameToLayer("Interactable");
             stringInteractionLayer = LayerMask.NameToLayer("Interactable (String)");
@@ -74,7 +75,7 @@ namespace MathiasCode
             //bool hitValid = Physics.Raycast(attractorPos, forwardDir, out RaycastHit hit, interactionRadius) && hit.rigidbody is not null && (((1 << hit.rigidbody?.gameObject.layer) & (interactionLayer | stringInteractionLayer)) != 0);
             bool hitValid = Physics.SphereCast(attractor.position, interactionRadius, attractor.forward, out RaycastHit hit, interactionRadius, mixedInteractionMask) && hit.rigidbody is not null && (((1 << hit.rigidbody?.gameObject.layer) & (interactionLayer | stringInteractionLayer)) != 0);
             bool isLookingNotCarrying = !isCarrying && hitValid;
-            float grabInput = interactAction.ReadValue<float>();
+            float grabInput = InputManager.Instance.GetInput(ControllerButton.TriggerButton, hand);
             Debug.Log(grabInput);
             if (allowCarryInput && grabInput > Epsilon)
             {

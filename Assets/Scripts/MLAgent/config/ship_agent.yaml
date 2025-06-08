@@ -21,7 +21,7 @@ behaviors:
         gamma: 0.99
         strength: 1.0
     keep_checkpoints: 10
-    checkpoint_interval: 50000
+    checkpoint_interval: 500000
 
 environment_parameters:
   num_agents:

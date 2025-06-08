@@ -57,7 +57,7 @@ namespace MathiasCode
 
         void Update()
         {
-            //if (attractVal > 0.1f && Physics.SphereCast(attractor.position, interactionRadius, attractor.forward, out RaycastHit hit, interactionRadius, mixedInteractionMask)) 
+            //if (attractVal > 0.1f && Physics.SphereCast(attractor.position, interactionRadius, attractor.forward, out RaycastHit hit, interactionRadius, mixedInteractionMask))
             //{
             //    if (hit.rigidbody == null) return;
             //    bool useStringInteractMode = ((1 << hit.transform.gameObject.layer) & stringInteractionLayer) == stringInteractionLayer;
@@ -71,12 +71,14 @@ namespace MathiasCode
             #region PickupItems
             Vector3 attractorPos = attractor.position;
             Vector3 forwardDir = attractor.transform.forward;
-            bool hitValid = Physics.Raycast(attractorPos, forwardDir, out RaycastHit hit, interactionRadius) && hit.rigidbody is not null && (((1 << hit.rigidbody?.gameObject.layer) & (interactionLayer | stringInteractionLayer)) != 0);
+            //bool hitValid = Physics.Raycast(attractorPos, forwardDir, out RaycastHit hit, interactionRadius) && hit.rigidbody is not null && (((1 << hit.rigidbody?.gameObject.layer) & (interactionLayer | stringInteractionLayer)) != 0);
+            bool hitValid = Physics.SphereCast(attractor.position, interactionRadius, attractor.forward, out RaycastHit hit, interactionRadius, mixedInteractionMask) && hit.rigidbody is not null && (((1 << hit.rigidbody?.gameObject.layer) & (interactionLayer | stringInteractionLayer)) != 0);
             bool isLookingNotCarrying = !isCarrying && hitValid;
             float grabInput = interactAction.ReadValue<float>();
-
+            Debug.Log(grabInput);
             if (allowCarryInput && grabInput > Epsilon)
             {
+                
                 if (isLookingNotCarrying)
                 {
                     carryObj = hit.rigidbody;
@@ -128,6 +130,11 @@ namespace MathiasCode
             //just as a failsafe
             if (carryObj == null) isCarrying = false;
             #endregion
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.DrawWireSphere(attractor.position + attractor.forward*interactionRadius, interactionRadius);
         }
     }
 }

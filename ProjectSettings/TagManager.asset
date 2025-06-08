@@ -6,11 +6,13 @@ TagManager:
   tags:
   - LeftController
   - RightController
-  - BoatVolume
   - Obstacle
   - Agent
   - cannonBall
   - Boat
+  - PlayerHead
+  - GroundCheck
+  - BoatVolume
   layers:
   - Default
   - TransparentFX
@@ -26,8 +28,8 @@ TagManager:
   - Boat
   - Agent
   - Obstacle
-  - 
-  - 
+  - ShipHull
+  - Water
   - 
   - 
   - 

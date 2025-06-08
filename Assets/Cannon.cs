@@ -17,7 +17,7 @@ public class Cannon : MonoBehaviour
     private PIDInteractionManager rightController;
     private void Awake()
     {
-        player = FindObjectOfType<PlayerController>();
+        player = FindFirstObjectByType<PlayerController>();
     }
     void FixedUpdate()
     {
@@ -26,7 +26,7 @@ public class Cannon : MonoBehaviour
 
         if (InputManager.Instance == null) return;
 
-        bool isCarrying = player.isCarrying || rightController.isCarrying || leftController.isCarrying;
+        bool isCarrying = player?.isCarrying ?? false || rightController.isCarrying || leftController.isCarrying;
 
         DateTime now = DateTime.Now;
         float fireBtn = InputManager.Instance.GetInput(ControllerButton.TriggerButton, InputManager.ControllerHand.Both);
@@ -41,7 +41,7 @@ public class Cannon : MonoBehaviour
         nextShoottime = now + TimeSpan.FromMilliseconds(fireRateMilli);
         Rigidbody rightObj = rightController.carryObj;
         Rigidbody leftObj = leftController.carryObj;
-        Rigidbody testPlayerObj = player.carryObj;
+        Rigidbody testPlayerObj = player?.carryObj;
         bool isInteractingWithCannon = isCarrying && ((leftObj != null && leftObj.CompareTag("Cannon")) || (rightObj != null && rightObj.CompareTag("Cannon")) || (testPlayerObj != null && testPlayerObj.CompareTag("Cannon")));
 
         Debug.Log(isInteractingWithCannon);

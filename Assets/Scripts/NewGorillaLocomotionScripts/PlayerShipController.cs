@@ -11,10 +11,8 @@ public class PlayerShipController : MonoBehaviour
     public LayerMask shipLayerMask = -1;
     public float detectionRadius = 0.2f;
     
-    [Header("Hand Detection")]
-    public bool useHandDetection = true;
-    private int handsOnShip = 0; // Count of hands touching ship
-    private Rigidbody handDetectedShip = null; // Ship detected by hands
+    [Header("Ship Rigidbody")]
+    [SerializeField] private Rigidbody shipRigidbody; // Assign the separate rigidbody in the inspector
 
     void Start()
     {
@@ -23,7 +21,6 @@ public class PlayerShipController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Enhanced detection for handstands
         CheckShipContact();
 
         if (activeShipRigidbody != null)
@@ -41,52 +38,19 @@ public class PlayerShipController : MonoBehaviour
         }
     }
 
-    // ADD THIS METHOD - Called by HandShipDetector
-    public void OnHandTouchingShip(Rigidbody shipRigidbody)
-    {
-        if (shipRigidbody != null)
-        {
-            // Hand is touching a ship
-            handsOnShip++;
-            handDetectedShip = shipRigidbody;
-            
-            Debug.Log($"Hand touching ship. Total hands: {handsOnShip}");
-            
-            // If we don't have an active ship connection, use the hand-detected ship
-            if (activeShipRigidbody == null)
-            {
-                activeShipRigidbody = shipRigidbody;
-                Debug.Log("Set active ship via hand contact");
-            }
-        }
-        else
-        {
-            // Hand left the ship
-            handsOnShip = Mathf.Max(0, handsOnShip - 1);
-            Debug.Log($"Hand left ship. Total hands: {handsOnShip}");
-            
-            // If no hands are touching, clear hand-detected ship
-            if (handsOnShip == 0)
-            {
-                handDetectedShip = null;
-            }
-        }
-    }
-
     private void CheckShipContact()
     {
-        // Multiple detection points for handstand support
         Vector3[] checkPoints = {
             transform.position,
             transform.position + Vector3.down * 0.5f,
-            transform.position + Vector3.up * 0.5f, // For handstands
+            transform.position + Vector3.up * 0.5f,
             transform.position + transform.forward * 0.3f,
             transform.position - transform.forward * 0.3f,
             transform.position + transform.right * 0.3f,
             transform.position - transform.right * 0.3f
         };
 
-        bool foundShipViaBody = false;
+        bool foundShip = false;
 
         // Check body contact points
         foreach (Vector3 point in checkPoints)
@@ -96,52 +60,25 @@ public class PlayerShipController : MonoBehaviour
             {
                 if (col.CompareTag("Boat"))
                 {
-                    if (activeShipRigidbody == null)
+                    if (activeShipRigidbody == null && shipRigidbody != null)
                     {
-                        activeShipRigidbody = col.attachedRigidbody;
+                        activeShipRigidbody = shipRigidbody;
                         Debug.Log("Player boarded ship via body detection");
                     }
-                    foundShipViaBody = true;
+                    foundShip = true;
                     break;
                 }
             }
-            if (foundShipViaBody) break;
-        }
-
-        // ENHANCED: Also consider ship contact if hands are touching
-        bool foundShipViaHands = false;
-        if (useHandDetection && handsOnShip > 0 && handDetectedShip != null)
-        {
-            foundShipViaHands = true;
-            
-            // If we don't have an active ship but hands are touching, use hand-detected ship
-            if (activeShipRigidbody == null)
-            {
-                activeShipRigidbody = handDetectedShip;
-                Debug.Log("Set active ship via hand detection in CheckShipContact");
-            }
-        }
-
-        // COMBINED: Player is connected if EITHER body OR hands are touching
-        bool foundShip = foundShipViaBody || foundShipViaHands;
-
-        // Debug info
-        if (foundShipViaHands && !foundShipViaBody)
-        {
-            Debug.Log("Player connected to ship via hands only");
+            if (foundShip) break;
         }
 
         // If no ship contact found and we were on one
         if (!foundShip && activeShipRigidbody != null)
         {
-            // Only disconnect if hands aren't touching either
-            if (!useHandDetection || handsOnShip == 0)
-            {
-                // Add momentum when leaving ship
-                playerRigidbody.linearVelocity += lastShipVelocity;
-                activeShipRigidbody = null;
-                Debug.Log("Player left ship - no body or hand contact");
-            }
+            // Add momentum when leaving ship
+            playerRigidbody.linearVelocity += lastShipVelocity;
+            activeShipRigidbody = null;
+            Debug.Log("Player left ship - no body contact");
         }
     }
 
@@ -157,16 +94,16 @@ public class PlayerShipController : MonoBehaviour
     // Keep collision detection as backup
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Boat"))
+        if (collision.gameObject.CompareTag("Boat") && shipRigidbody != null)
         {
-            activeShipRigidbody = collision.rigidbody;
+            activeShipRigidbody = shipRigidbody;
             Debug.Log("Player boarded ship via collision");
         }
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (activeShipRigidbody != null && collision.rigidbody == activeShipRigidbody)
+        if (collision.gameObject.CompareTag("Boat") && activeShipRigidbody != null)
         {
             // Let CheckShipContact handle the exit to avoid premature disconnection
             Debug.Log("Player collision exit from ship");

@@ -127,7 +127,7 @@ MonoBehaviour:
   slideAxis: {x: 0, y: 0, z: 1}
   minValue: 0
   maxValue: 100
-  currentValue: 100
+  currentValue: 0
   slideSensitivity: 20
   sharedValue: {fileID: 0}
   OnValueChanged:

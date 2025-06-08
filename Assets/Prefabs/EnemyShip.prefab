@@ -782,7 +782,7 @@ MonoBehaviour:
   cannonballPrefab: {fileID: 966106134746857276, guid: 36d61184b5388a34b8877b3b7f9ae296, type: 3}
   leftCannonMuzzle: {fileID: 357679671056458469}
   rightCannonMuzzle: {fileID: 306576391082473731}
-  cannonFireForce: 1000
+  cannonFireForce: 25
   reloadTime: 2
   target: {fileID: 0}
   aiEnabled: 1

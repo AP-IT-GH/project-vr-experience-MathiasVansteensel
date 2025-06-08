@@ -157,7 +157,7 @@ Shader "Example/URPUnlitShaderTessellated"
             half4 frag(Varyings input) : SV_Target
             {
                 float3 normal = normalize(input.normalWS);
-                float3 viewDir = normalize(_WorldSpaceCameraPos - input.worldPos);
+                float3 viewDir = normalize(GetCameraPositionWS() - input.worldPos);
 
                 Light mainLight = GetMainLight();
                 float3 lightDir = normalize(mainLight.direction);
@@ -168,7 +168,7 @@ Shader "Example/URPUnlitShaderTessellated"
                 float spec = pow(saturate(dot(normal, halfwayDir)), _Shininess);
                 float3 specColor = lightColor * _SpecColor.rgb * spec;
 
-                float depthFactor = saturate(length(input.worldPos - _WorldSpaceCameraPos) * 0.05);
+                float depthFactor = saturate(length(input.worldPos - GetCameraPositionWS()) * 0.05);
                 float3 waterColor = lerp(_ShallowColor.rgb, _DeepColor.rgb, depthFactor);
 
                 float3 finalColor = waterColor;//lerp(waterColor, float3(1,1,1), fresnel * _FresnelStrength);

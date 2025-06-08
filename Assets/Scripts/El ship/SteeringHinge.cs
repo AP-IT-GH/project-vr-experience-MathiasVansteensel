@@ -80,14 +80,14 @@ public class SteeringWheelHingeJoint : XRBaseInteractable
     {
         if (!isInteracting || interactorTransform == null) return;
 
-        float currentAngle = GetInteractorAngle();
+        float currentAngle = GetInteractorLocalAngle();
         float angleDelta = Mathf.DeltaAngle(startAngle, currentAngle) * rotationSensitivity;
 
         totalRotation += angleDelta;
         totalRotation = Mathf.Clamp(totalRotation, -maxRotation, maxRotation);
 
-        // Apply rotation
-        transform.localRotation = Quaternion.Euler(totalRotation, 0, 0); // assuming local X axis is rotation axis
+        // Apply local rotation
+        transform.localRotation = Quaternion.Euler(totalRotation, 0, 0);
 
         CurrentAngle = totalRotation;
         OnWheelRotated?.Invoke(CurrentAngle / maxRotation);
@@ -96,10 +96,15 @@ public class SteeringWheelHingeJoint : XRBaseInteractable
         startAngle = currentAngle;
     }
 
-    private float GetInteractorAngle()
+    private float GetInteractorLocalAngle()
     {
-        Vector3 dir = interactorTransform.position - transform.position;
-        Vector3 projected = Vector3.ProjectOnPlane(dir, transform.right); // Project onto wheel's rotation plane
+        // Convert interactor world position to local space
+        Vector3 localInteractorPos = transform.InverseTransformPoint(interactorTransform.position);
+        
+        // Project onto the wheel's rotation plane (local YZ plane if rotating around X)
+        Vector3 projected = new Vector3(0, localInteractorPos.y, localInteractorPos.z);
+        
+        // Calculate angle in local space
         return Mathf.Atan2(projected.z, projected.y) * Mathf.Rad2Deg;
     }
 
@@ -107,7 +112,7 @@ public class SteeringWheelHingeJoint : XRBaseInteractable
     {
         base.OnSelectEntered(args);
         interactorTransform = args.interactorObject.transform;
-        startAngle = GetInteractorAngle();
+        startAngle = GetInteractorLocalAngle();
         isInteracting = true;
     }
 
